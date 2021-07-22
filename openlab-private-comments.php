@@ -13,7 +13,7 @@
 
 namespace OpenLab\PrivateComments;
 
-const VERSION = '1.0.1';
+const VERSION     = '1.0.1';
 const PLUGIN_FILE = __FILE__;
 
 if ( is_admin() ) {
@@ -49,14 +49,14 @@ register_activation_hook( __FILE__, __NAMESPACE__ . '\\activate' );
 function register_assets() {
 	wp_register_style(
 		'ol-private-comments-style',
-		plugins_url( 'assets/css/private-comments.css' , __FILE__ ),
+		plugins_url( 'assets/css/private-comments.css', __FILE__ ),
 		[],
 		VERSION
 	);
 
 	wp_register_script(
 		'ol-private-comments-script',
-		plugins_url( 'assets/js/private-comments.js' , __FILE__ ),
+		plugins_url( 'assets/js/private-comments.js', __FILE__ ),
 		[ 'jquery' ],
 		VERSION,
 		true
@@ -112,7 +112,7 @@ function insert_comment( $comment_id, $comment ) {
 	}
 
 	$is_private = ! empty( $_POST['ol-private-comment'] );
-	$revisions = [];
+	$revisions  = [];
 
 	// Inherit comment status from parent.
 	if ( ! $is_private && ! empty( $comment->comment_parent ) ) {
@@ -226,8 +226,8 @@ function remove_private_comments( \WP_Comment_Query $query ) {
 
 	$pc_ids = get_inaccessible_comments( get_current_user_id(), $post_id );
 
-	$not__in = (array) $query->query_vars['comment__not_in'];
-	$not__in = array_merge( $not__in, $pc_ids );
+	$not__in                              = (array) $query->query_vars['comment__not_in'];
+	$not__in                              = array_merge( $not__in, $pc_ids );
 	$query->query_vars['comment__not_in'] = $not__in;
 }
 add_action( 'pre_get_comments', __NAMESPACE__ . '\\remove_private_comments' );
@@ -252,7 +252,7 @@ function get_inaccessible_comments( $user_id = null, $post_id = 0 ) {
 				'value' => '1',
 			],
 		],
-		'status' => 'any',
+		'status'     => 'any',
 	];
 
 	if ( ! empty( $post_id ) ) {
@@ -325,11 +325,13 @@ function filter_comment_count( $count, $post_id = 0 ) {
 		return $count;
 	}
 
-	$query = new \WP_Comment_Query();
-	$comments = $query->query( [
-		'post_id' => $post_id,
-		'fields'  => 'ids',
-	] );
+	$query    = new \WP_Comment_Query();
+	$comments = $query->query(
+		[
+			'post_id' => $post_id,
+			'fields'  => 'ids',
+		]
+	);
 
 	return count( $comments );
 }

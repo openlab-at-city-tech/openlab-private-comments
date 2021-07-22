@@ -21,9 +21,9 @@ use const OpenLab\PrivateComments\PLUGIN_FILE;
  * @return array
  */
 function array_insert_after( array $array, $key, array $new ) {
-	$keys = array_keys( $array );
+	$keys  = array_keys( $array );
 	$index = array_search( $key, $keys );
-	$pos = false === $index ? count( $array ) : $index + 1;
+	$pos   = false === $index ? count( $array ) : $index + 1;
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
 }
 
@@ -57,7 +57,7 @@ function comment_row_actions( $actions, $comment ) {
 			$comment_id,
 			(int) $is_private,
 			$label
-		)
+		),
 	];
 
 	$actions = array_insert_after( $actions, 'edit', $action );
@@ -80,15 +80,19 @@ function enqueue_assets( $hook_suffix ) {
 
 	wp_enqueue_script(
 		'ol-private-comments-admin',
-		plugins_url( 'assets/js/private-comments-admin.js' , __DIR__ ),
+		plugins_url( 'assets/js/private-comments-admin.js', __DIR__ ),
 		[ 'jquery' ],
 		VERSION,
 		true
 	);
 
-	wp_localize_script( 'ol-private-comments-admin', 'olPrivateComments', [
-		'nonce' => wp_create_nonce( 'ol_private_comments_nonce' ),
-	 ] );
+	wp_localize_script(
+		'ol-private-comments-admin',
+		'olPrivateComments',
+		[
+			'nonce' => wp_create_nonce( 'ol_private_comments_nonce' ),
+		]
+	);
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_assets' );
 
@@ -111,10 +115,12 @@ function handle_ajax_request() {
 
 	update_comment_meta( $comment_id, 'ol_is_private', $is_private );
 
-	wp_send_json_success( [
-		'is_private' => $is_private,
-		'label'      => $label,
-	] );
+	wp_send_json_success(
+		[
+			'is_private' => $is_private,
+			'label'      => $label,
+		]
+	);
 }
 add_action( 'wp_ajax_openlab_private_comments', __NAMESPACE__ . '\\handle_ajax_request' );
 
@@ -197,8 +203,12 @@ function deactivation_notice( $plugin_file ) {
 	}
 
 	wp_enqueue_script( 'olpc-deactivation', plugins_url( 'assets/js/deactivation.js', PLUGIN_FILE ), [], VERSION, true );
-	wp_localize_script( 'olpc-deactivation', 'OLPCDeactivate', [
-		'message' => esc_html__( 'Please note: If you deactivate the OpenLab Private Comments plugin, any private comments made while the plugin was activated will become visible to anyone who can view your site.', 'openlab-private-comments' ),
-	] );
+	wp_localize_script(
+		'olpc-deactivation',
+		'OLPCDeactivate',
+		[
+			'message' => esc_html__( 'Please note: If you deactivate the OpenLab Private Comments plugin, any private comments made while the plugin was activated will become visible to anyone who can view your site.', 'openlab-private-comments' ),
+		]
+	);
 }
 add_action( 'after_plugin_row', __NAMESPACE__ . '\\deactivation_notice' );
