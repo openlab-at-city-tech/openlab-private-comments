@@ -2,10 +2,10 @@
 /**
  * Plugin Name: OpenLab Private Comments
  * Description: Private comments for posts and pages.
- * Author: OpenLab
+ * Author: OpenLab at City Tech
  * Author URI: http://openlab.citytech.cuny.edu
  * Plugin URI: http://openlab.citytech.cuny.edu
- * Version: 1.0.1
+ * Version: 1.1
  * License: GPL-3.0-or-later
  * Text Domain: openlab-private-comments
  * Domain Path: /languages
@@ -13,7 +13,7 @@
 
 namespace OpenLab\PrivateComments;
 
-const VERSION     = '1.0.1';
+const VERSION     = '1.1';
 const PLUGIN_FILE = __FILE__;
 
 if ( is_admin() ) {
