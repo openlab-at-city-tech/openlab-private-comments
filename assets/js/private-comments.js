@@ -11,11 +11,11 @@ jQuery( document ).ready(
 				var privateCheckbox = $( '#ol-private-comment' );
 
 				if ( parent.length && parent.find( '.ol-private-comment-notice' ).length ) {
-					 privateCheckbox.prop( 'checked', true );
-					 privateCheckbox.prop( 'disabled', true );
+					privateCheckbox.prop( 'checked', true );
+					privateCheckbox.prop( 'disabled', true );
 				} else {
-						 privateCheckbox.prop( 'checked', false );
-						 privateCheckbox.prop( 'disabled', false );
+					privateCheckbox.prop( 'checked', false );
+					privateCheckbox.prop( 'disabled', false );
 				}
 			}
 		);

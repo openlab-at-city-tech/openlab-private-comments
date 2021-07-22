@@ -22,18 +22,18 @@ use const OpenLab\PrivateComments\PLUGIN_FILE;
  */
 function array_insert_after( array $array, $key, array $new ) {
 	$keys  = array_keys( $array );
-	$index = array_search( $key, $keys );
+	$index = array_search( $key, $keys, true );
 	$pos   = false === $index ? count( $array ) : $index + 1;
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
 }
 
- /**
-  * Display custom comment row action.
-  *
-  * @param array $actions
-  * @param \WP_Comment $comment_id
-  * @return array $actions
-  */
+/**
+ * Display custom comment row action.
+ *
+ * @param array $actions
+ * @param \WP_Comment $comment_id
+ * @return array $actions
+ */
 function comment_row_actions( $actions, $comment ) {
 	$user_id           = (int) $comment->user_id;
 	$comment_id        = (int) $comment->comment_ID;
@@ -74,7 +74,7 @@ add_filter( 'comment_row_actions', __NAMESPACE__ . '\\comment_row_actions', 10, 
  */
 function enqueue_assets( $hook_suffix ) {
 	// Only load on Comments admin page and dashboard (for "Recent Comments").
-	if ( ! in_array( $hook_suffix, [ 'index.php', 'edit-comments.php' ] ) ) {
+	if ( ! in_array( $hook_suffix, [ 'index.php', 'edit-comments.php' ], true ) ) {
 		return;
 	}
 

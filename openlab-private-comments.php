@@ -77,7 +77,7 @@ function is_author( $post_id = null ) {
 		return false;
 	}
 
-	return is_user_logged_in() && get_current_user_id() == $post->post_author;
+	return is_user_logged_in() && (int) get_current_user_id() === (int) $post->post_author;
 }
 
 /**
@@ -111,6 +111,7 @@ function insert_comment( $comment_id, $comment ) {
 		return;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$is_private = ! empty( $_POST['ol-private-comment'] );
 	$revisions  = [];
 
@@ -263,17 +264,19 @@ function get_inaccessible_comments( $user_id = null, $post_id = 0 ) {
 
 	add_action( 'pre_get_comments', __NAMESPACE__ . '\\remove_private_comments' );
 
+	$user_id = (int) $user_id;
+
 	// Filter out the ones that are written by the logged-in user, as well
 	// as those that are attached to a post that the user is the author of
 	$pc_ids = [];
 	foreach ( $private_comments as $private_comment ) {
-		if ( $user_id && ! empty( $private_comment->user_id ) && $user_id == $private_comment->user_id ) {
+		if ( $user_id && ! empty( $private_comment->user_id ) && $user_id === (int) $private_comment->user_id ) {
 			continue;
 		}
 
 		if ( $user_id ) {
 			$comment_post = get_post( $private_comment->comment_post_ID );
-			if ( $user_id == $comment_post->post_author ) {
+			if ( $user_id === (int) $comment_post->post_author ) {
 				continue;
 			}
 		}
@@ -283,7 +286,7 @@ function get_inaccessible_comments( $user_id = null, $post_id = 0 ) {
 			$parent_id      = (int) $private_comment->comment_parent;
 			$parent_comment = get_comment( $parent_id );
 
-			if ( $user_id == $parent_comment->user_id ) {
+			if ( $user_id === (int) $parent_comment->user_id ) {
 				continue;
 			}
 		}
