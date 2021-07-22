@@ -5,7 +5,7 @@ on:
     paths:
       - '**.php'
     branches:
-      - master
+      - main
       - '1.*'
   pull_request:
 
