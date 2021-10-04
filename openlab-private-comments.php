@@ -245,6 +245,7 @@ add_action( 'pre_get_comments', __NAMESPACE__ . '\\remove_private_comments' );
 function get_inaccessible_comments( $user_id = null, $post_id = 0 ) {
 	// Get a list of private comments
 	remove_action( 'pre_get_comments', __NAMESPACE__ . '\\remove_private_comments' );
+	remove_action( 'pre_get_comments', 'olgc_remove_private_comments' );
 
 	$comment_args = [
 		'meta_query' => [
@@ -263,6 +264,7 @@ function get_inaccessible_comments( $user_id = null, $post_id = 0 ) {
 	$private_comments = get_comments( $comment_args );
 
 	add_action( 'pre_get_comments', __NAMESPACE__ . '\\remove_private_comments' );
+	add_action( 'pre_get_comments', 'olgc_remove_private_comments' );
 
 	$user_id = (int) $user_id;
 
